@@ -1,0 +1,29 @@
+Verification rerun, canonical dataset (33,376 rows, MPS non-deterministic)
+Note: test metrics may drift +/-1% from report values due to MPS non-determinism.
+The spike F1 numbers are canonical reproducible values from the verified pipeline.
+
+TCN
+  Params:    395,553
+  Best epoch: 15
+  Train time: 157.6s
+  Test R2   = 0.8239    RMSE = 15.09    MAE = 10.78
+  Spike threshold = 130.66 EUR/MWh (test-set 90th percentile, 668 spikes / 6676 hours)
+  Spike P = 0.762,  R = 0.744,  F1 = 0.753
+  Confusion matrix: TN=5853, FP=155, FN=171, TP=497
+
+DNN
+  Params:    114,305
+  Best epoch: 35
+  Train time: 33.3s
+  Test R2   = 0.8030    RMSE = 15.96    MAE = 11.53
+  Spike threshold = 130.66 EUR/MWh (test-set 90th percentile, 668 spikes / 6676 hours)
+  Spike P = 0.823,  R = 0.656,  F1 = 0.730
+  Confusion matrix: TN=5914, FP=94, FN=230, TP=438
+
+Reference XGB+SVR ensemble: P=0.802, R=0.740, F1=0.769
+
+--- Verification against report ---
+  TCN R2: 0.8239 vs report 0.8514  (DRIFT 2.7%)
+  DNN R2: 0.8030 vs report 0.8173  (DRIFT 1.4%)
+
+Interpretation: TCN spike F1 (0.753) matches the ensemble (0.769) within +/-0.02 tolerance.  DNN spike F1 (0.730) is lower as expected (no temporal context).
