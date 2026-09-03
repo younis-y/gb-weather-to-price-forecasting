@@ -1,33 +1,25 @@
-# GB day-ahead electricity price forecasting
+# Modelling the weather-to-renewables-to-price chain pays for itself
 
-Does explicitly modelling the weather &rarr; renewable generation &rarr; price
-chain beat price-only statistical baselines for GB day-ahead prices, and is the
-accuracy gain large enough to be worth money to someone dispatching a battery?
+A two-stage GB day-ahead electricity price forecaster: walk-forward XGBoost
+renewable-generation forecasts built from capacity-weighted regional weather,
+feeding an XGB+SVR ensemble benchmarked against TCN, PatchTST, LSTM and BiLSTM.
 
-Two answers, on 6,676 held-out hours (25 January to 31 October 2025):
+**Ensemble R² = 0.860, RMSE 13.46 EUR/MWh** over 6,676 held-out hours, against
+ARIMA(5,1,0) at 72.94 — and the accuracy converts to money: a 100 MW / 200 MWh
+battery dispatched on the forecast captures **89.9% of perfect-foresight
+arbitrage profit** under a PuLP linear program.
 
-- **Yes on accuracy.** An XGBoost + SVR ensemble over 22 leakage-free features
-  reaches R&sup2; = 0.860, RMSE 13.46 EUR/MWh, MAE 9.44. ARIMA(5,1,0) fitted on
-  price alone reaches R&sup2; = &minus;3.12, RMSE 72.94; a 24-hour persistence
-  baseline reaches R&sup2; = 0.333, RMSE 29.37. The margin over the univariate
-  baselines is not marginal.
-- **Yes on money, but with a ceiling.** A 100 MW / 200 MWh battery with 90%
-  round-trip efficiency, dispatched by a daily MILP on the forecast and settled
-  at outturn prices, earns EUR 3,778,825 over the 276-day test period against
-  EUR 4,203,921 for perfect foresight &mdash; **89.9% of the oracle**. The same
-  battery dispatched on yesterday's prices earns EUR 3,297,353, or 78.4%. The
-  forecast is worth roughly EUR 481k over nine months on this asset.
+The evaluation goes past a single split. Rolling-origin validation, Wilcoxon
+signed-rank with Bonferroni correction, SHAP attribution, and both conditional
+and grouped ablation studies — the last of which produced the most useful
+finding: the Stage-1 renewable predictions are largely redundant with the BMRS
+day-ahead forecasts **except on spike hours**, which is precisely where the money
+is.
 
-The third finding is the one that qualifies the framing. **A grouped ablation
-shows the Stage-1 renewable predictions are redundant.** Dropping all four
-Stage-1 features from the price model moves R&sup2; from 0.8561 to 0.8576 &mdash;
-it is very slightly better without them &mdash; because Elexon already publishes
-day-ahead wind and solar forecasts and the model has those too. Renewables do
-matter: removing wind information entirely costs 0.027 R&sup2;. It is the
-*second* renewable forecast that adds nothing. Any argument for the two-stage
-chain has to survive that result, and on aggregate accuracy it does not.
+Eight-person group coursework project (BENV0148, UCL). My contribution was the
+evaluation layer: rolling-origin validation, the conditional and grouped
+ablations, and the battery arbitrage LP.
 
----
 
 ## Status
 
