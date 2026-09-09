@@ -26,8 +26,7 @@ ablations, and the battery arbitrage LP.
 This is an eight-person group coursework project (BENV0148 Advanced Machine
 Learning, UCL Bartlett). This tree has been prepared for public release &mdash;
 coursework reports, other students' candidate codes, per-member contribution
-statements and commercially licensed source data have all been removed &mdash;
-but it is **not published yet**, pending consent from the other seven authors.
+statements and commercially licensed source data have all been removed.
 The commit history here starts fresh; it is not the group's working history.
 
 **My own contribution** to the group project was the evaluation layer: the
