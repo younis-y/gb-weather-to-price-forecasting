@@ -5,13 +5,13 @@ renewable-generation forecasts built from capacity-weighted regional weather,
 feeding an XGB+SVR ensemble benchmarked against TCN, PatchTST, LSTM and BiLSTM.
 
 **Ensemble R² = 0.860, RMSE 13.46 EUR/MWh** over 6,676 held-out hours, against
-ARIMA(5,1,0) at 72.94 — and the accuracy converts to money: a 100 MW / 200 MWh
+ARIMA(5,1,0) at 72.94, and the accuracy converts to money: a 100 MW / 200 MWh
 battery dispatched on the forecast captures **89.9% of perfect-foresight
 arbitrage profit** under a PuLP linear program.
 
 The evaluation goes past a single split. Rolling-origin validation, Wilcoxon
 signed-rank with Bonferroni correction, SHAP attribution, and both conditional
-and grouped ablation studies — the last of which produced the most useful
+and grouped ablation studies, the last of which produced the most useful
 finding: the Stage-1 renewable predictions are largely redundant with the BMRS
 day-ahead forecasts **except on spike hours**, which is precisely where the money
 is.
