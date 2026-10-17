@@ -1,4 +1,4 @@
-# Modelling the weather-to-renewables-to-price chain pays for itself
+# GB day-ahead price forecasting: where weather modelling helps, and where it doesn't
 
 A two-stage GB day-ahead electricity price forecaster: walk-forward XGBoost
 renewable-generation forecasts built from capacity-weighted regional weather,
@@ -10,11 +10,11 @@ battery dispatched on the forecast captures **89.9% of perfect-foresight
 arbitrage profit** under a PuLP linear program.
 
 The evaluation goes past a single split. Rolling-origin validation, Wilcoxon
-signed-rank with Bonferroni correction, SHAP attribution, and both conditional
-and grouped ablation studies, the last of which produced the most useful
-finding: the Stage-1 renewable predictions are largely redundant with the BMRS
-day-ahead forecasts **except on spike hours**, which is precisely where the money
-is.
+signed-rank with Bonferroni correction, SHAP attribution, and grouped ablation
+studies, the last of which produced the most useful finding: wind information
+matters, but the Stage-1 renewable predictions add nothing once Elexon's
+day-ahead renewable forecasts are in the feature set, on point accuracy or on
+spike hours.
 
 Eight-person group coursework project (BENV0148, UCL). My contribution was the
 evaluation layer: rolling-origin validation, the conditional and grouped
